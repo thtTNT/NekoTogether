@@ -10,6 +10,9 @@
   "author": "thtTNT",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@babel/preset-env": "^7.15.4",
+    "@babel/register": "^7.15.3",
     "electron": "^14.0.0"
   }
 }
