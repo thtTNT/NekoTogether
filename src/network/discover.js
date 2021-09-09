@@ -1,4 +1,5 @@
 import dgram from 'dgram'
+import NekoTogether from "../nekoTogether";
 
 export default class Discover {
 
@@ -32,9 +33,9 @@ export default class Discover {
         let message = Buffer.from(JSON.stringify({
             port: "unknown",
             client: {
-                id: "id",
-                version: "1.0.0",
-                protocol_version: 1
+                id: NekoTogether.instance.config.clientId,
+                version: NekoTogether.instance.config.CLIENT_VERSION,
+                protocol_version: NekoTogether.instance.config.PROTOCOL_VERSION
             }
         }))
         setInterval(() => {
