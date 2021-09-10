@@ -1,10 +1,10 @@
-import Client from "./client";
+import ClientInfo from "./clientInfo";
 
 export default class ClientManager {
 
-    private clients: Client[] = []
+    private clients: ClientInfo[] = []
 
-    accept(newClient: Client): void {
+    accept(newClient: ClientInfo): void {
         for (let client of this.clients) {
             if (newClient.id === client.id) return
         }

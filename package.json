@@ -5,15 +5,27 @@
   "main": "./build/app.js",
   "scripts": {
     "prestart": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "predist": "tsc",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mwl"
   },
   "author": "thtTNT",
   "license": "ISC",
+  "build": {
+    "appId": "top.nekoit.together",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "extends": null
+  },
   "devDependencies": {
-    "electron": "^14.0.0"
+    "electron": "^14.0.0",
+    "electron-builder": "^22.11.7"
   },
   "dependencies": {
+    "ip": "^1.1.5",
     "uuid": "^8.3.2"
   }
 }

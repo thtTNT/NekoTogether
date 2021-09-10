@@ -1,4 +1,4 @@
-export default class Client {
+export default class ClientInfo {
 
     public readonly id: String
     public readonly ip: String
