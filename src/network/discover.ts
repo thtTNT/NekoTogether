@@ -1,5 +1,6 @@
 import {createSocket} from 'dgram'
 import NekoTogether from "../nekoTogether";
+import Client from "../client/client";
 
 export default class Discover {
 
@@ -13,13 +14,16 @@ export default class Discover {
         server.on("message", (msg, remoteInfo) => {
             let data = JSON.parse(msg.toString())
             if (!data) return;
-            console.log(data)
-            console.log("发现客户端上线：")
-            console.log("ip地址: " + remoteInfo.address)
-            console.log("通讯端口: " + data.port)
-            console.log("客户端ID: " + data.client.id)
-            console.log("客户端版本: " + data.client.version)
-            console.log("客户端通讯协议: " + data.client.protocol_version)
+            let client = new Client(
+                data.client.id,
+                remoteInfo.address,
+                data.port,
+                data.client.version,
+                data.client.protocol_version
+            )
+
+            // notify clientManager accept new client
+            NekoTogether.instance.clientManager.accept(client)
         })
 
         server.on("listening", () => {
