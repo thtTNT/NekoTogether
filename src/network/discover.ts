@@ -1,10 +1,10 @@
-import dgram from 'dgram'
+import {createSocket} from 'dgram'
 import NekoTogether from "../nekoTogether";
 
 export default class Discover {
 
-    constructor(props) {
-        let server = dgram.createSocket("udp4")
+    constructor() {
+        let server = createSocket("udp4")
         server.on("error", (err) => {
             console.log("发现服务启动失败")
             server.close()
@@ -26,7 +26,7 @@ export default class Discover {
             console.log("发现服务启动完成")
         })
 
-        let socket = dgram.createSocket("udp4")
+        let socket = createSocket("udp4")
         socket.bind(() => {
             socket.setBroadcast(true)
         })

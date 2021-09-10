@@ -2,17 +2,15 @@
   "name": "neko-together",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "./build/app.js",
   "scripts": {
+    "prestart": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
   },
   "author": "thtTNT",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.4",
-    "@babel/register": "^7.15.3",
     "electron": "^14.0.0"
   },
   "dependencies": {

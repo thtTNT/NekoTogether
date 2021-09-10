@@ -2,10 +2,11 @@ import {v4 as generateUUIDv4} from 'uuid'
 
 export default class Config {
 
-    CLIENT_VERSION = "1.0.0"
-    PROTOCOL_VERSION = 1
+    public CLIENT_VERSION = "1.0.0"
+    public PROTOCOL_VERSION = 1
+    public clientId: string
 
-    constructor(props) {
+    constructor() {
         this.clientId = generateUUIDv4();
     }
 
