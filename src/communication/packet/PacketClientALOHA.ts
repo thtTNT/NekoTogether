@@ -12,7 +12,7 @@ export default class PacketClientALOHA implements Packet {
         return new PacketClientALOHA(
             data["id"],
             data["version"],
-            data["protocol_version"]
+            data["protocolVersion"]
         )
     }
 

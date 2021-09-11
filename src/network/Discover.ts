@@ -1,18 +1,24 @@
 import {createSocket} from 'dgram'
-import NekoTogether from "../nekoTogether";
-import ClientInfo from "../client/clientInfo";
+import NekoTogether from "../NekoTogether";
+import ClientInfo from "../communication/ClientInfo";
 import * as ip from "ip";
 import * as os from "os";
-import * as net from "net";
-import * as process from "process";
 
 export default class Discover {
+
+    private listenPort: number = 36001
 
     constructor() {
         let server = createSocket("udp4")
         server.on("error", (err) => {
-            console.log("发现服务启动失败")
-            server.close()
+            // @ts-ignore
+            if (err.code === "EADDRINUSE") {
+                console.log("Discover Service launch error. (Port in use)")
+                if (this.listenPort <= 36010) {
+                    server.bind(++this.listenPort)
+                }
+            }
+
         })
 
         server.on("message", (msg, remoteInfo) => {
@@ -27,24 +33,16 @@ export default class Discover {
             )
 
             // notify clientManager accept new client
-            NekoTogether.instance.clientManager.accept(client)
+            NekoTogether.instance.communicationManager.accept(client)
         })
 
         server.on("listening", () => {
-            console.log("发现服务启动完成")
+            console.log("Discover service launch successfully! (port:" + this.listenPort + ")")
         })
-        server.bind(36001)
+        server.bind(this.listenPort)
 
         // Send Part
         let socket = createSocket("udp4")
-        let message = Buffer.from(JSON.stringify({
-            port: NekoTogether.instance.communicationManager.SERVER_PORT,
-            client: {
-                id: NekoTogether.instance.config.clientId,
-                version: NekoTogether.instance.config.CLIENT_VERSION,
-                protocol_version: NekoTogether.instance.config.PROTOCOL_VERSION
-            }
-        }))
 
         let availableNetwork = []
         for (let inter of Object.values(os.networkInterfaces())) {
@@ -56,13 +54,24 @@ export default class Discover {
         }
 
         setInterval(() => {
+            const message = Buffer.from(JSON.stringify({
+                port: NekoTogether.instance.communicationManager.SERVER_PORT,
+                client: {
+                    id: NekoTogether.instance.config.clientId,
+                    version: NekoTogether.instance.config.CLIENT_VERSION,
+                    protocol_version: NekoTogether.instance.config.PROTOCOL_VERSION
+                }
+            }))
+
             for (let network of availableNetwork) {
                 let sub = ip.cidrSubnet(network.cidr)
                 let first = ip.toLong(sub.firstAddress)
                 let last = ip.toLong(sub.lastAddress)
                 for (let i = first; i <= last; i++) {
-                    socket.send(message, 0, message.length, 36001, ip.fromLong(i), (error, bytes) => {
-                    })
+                    for (let port = 36001; port <= 36010; port++) {
+                        socket.send(message, 0, message.length, port, ip.fromLong(i), (error, bytes) => {
+                        })
+                    }
                 }
             }
         }, 1000)

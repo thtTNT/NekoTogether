@@ -1,5 +1,6 @@
 import * as net from "net";
 import PacketClientALOHA from "./packet/PacketClientALOHA";
+import Packet from "./packet/Packet";
 
 enum State {
     WAIT_LENGTH,
@@ -16,6 +17,7 @@ export default class MessageHandler {
 
 
     constructor(socket: net.Socket) {
+        this.socket = socket
         this.socket.on("data", (msg) => {
             // @ts-ignore
             for (let chr of msg.buffer) {
@@ -48,10 +50,16 @@ export default class MessageHandler {
 
     handleData() {
         let packet = JSON.parse(this.buffer)
-        switch (packet.type) {
+        switch (packet.typeName) {
             case "CLIENT_ALOHA":
                 this._whenPacket(PacketClientALOHA.fromJSON(packet))
         }
+    }
+
+    send(packet: Packet) {
+        let data = JSON.stringify(packet)
+        this.socket.write(data.length.toString())
+        this.socket.write(data)
     }
 
 }

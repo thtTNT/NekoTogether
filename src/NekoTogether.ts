@@ -1,6 +1,5 @@
-import Discover from './network/discover'
+import Discover from './network/Discover'
 import Config from './config'
-import ClientManager from "./client/clientManager"
 import CommunicationManager from "./communication/CommunicationManager";
 
 export default class NekoTogether {
@@ -8,7 +7,6 @@ export default class NekoTogether {
     public static instance: NekoTogether
     public readonly config: Config
     public readonly discover: Discover
-    public readonly clientManager: ClientManager
     public readonly communicationManager: CommunicationManager
 
     constructor() {
@@ -16,7 +14,6 @@ export default class NekoTogether {
         this.config = new Config();
         this.communicationManager = new CommunicationManager()
         this.discover = new Discover()
-        this.clientManager = new ClientManager()
     }
 
 }

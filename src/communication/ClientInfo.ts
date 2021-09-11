@@ -1,12 +1,12 @@
 export default class ClientInfo {
 
-    public readonly id: String
+    public readonly id: string
     public readonly ip: String
     public readonly port: String
     public readonly version: String
     public readonly protocolVersion: number
 
-    constructor(id, ip, port, version, protocolVersion) {
+    constructor(id: string, ip, port, version, protocolVersion) {
         this.id = id
         this.ip = ip
         this.port = port
