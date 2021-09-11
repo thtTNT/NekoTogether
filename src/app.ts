@@ -3,5 +3,5 @@ import {run as runApp} from './NekoTogether'
 
 
 app.whenReady().then(() => {
-    runApp()
+    runApp(app)
 })

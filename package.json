@@ -8,7 +8,7 @@
     "start": "electron .",
     "predist": "tsc",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl"
+    "dist": "electron-builder -mw"
   },
   "author": "thtTNT",
   "license": "ISC",
@@ -16,6 +16,7 @@
     "appId": "top.nekoit.together",
     "files": [
       "build/**/*",
+      "assets/**/*",
       "node_modules/**/*"
     ],
     "extends": null
