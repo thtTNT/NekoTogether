@@ -24,7 +24,7 @@ export default class FileHelperManager {
 
         server.on("connection", (socket) => {
             socket.on('data', (data) => {
-                console.log(data.toString())
+                NekoTogether.instance.transferManager.send(data.toString())
             })
         })
 

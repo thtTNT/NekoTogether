@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/muse-ui.css"/>
+<body style="height: auto;width: 512px;padding: 16px;" id="body">
+<div id="app">
+    <h3>喵唧快传</h3>
+    <mu-divider style="margin: 8px 0;"></mu-divider>
+    <div style="min-height: 240px">
+        <div style="height: 100%;width: 100%;display: flex;justify-content: center;align-items: center">
+            <p style="color: #616161">暂时没有找到其他在局域网的设备，请见检查其他设备是否在同一局域网内并正常启动"喵唧快传"。</p>
+        </div>
+    </div>
+    <mu-divider style="margin: 8px 0;"></mu-divider>
+    <div style="padding: 4px 0;display: flex;flex-direction:row;justify-content: end">
+        <mu-button small color="primary" @click="close">取消</mu-button>
+    </div>
+</div>
+</body>
+<script src="js/vue.js"></script>
+<script src="js/muse-ui.js"></script>
+<script>
+    const {ipcRenderer} = require("electron")
+
+    Vue.use(MuseUI)
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {}
+        },
+        methods: {
+            close(){
+                window.close()
+            }
+        }
+    })
+
+    const body = document.getElementById("body")
+
+    ipcRenderer.send("resize", {
+        width: body.clientWidth,
+        height: body.clientHeight
+    })
+</script>
+</html>

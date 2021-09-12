@@ -16,8 +16,9 @@ export default class Client {
             if (packet instanceof PacketClientALOHA) {
                 this.info = new ClientInfo(
                     packet.id,
-                    socket.address(),
-                    socket.remotePort,
+                    socket.address().toString(),
+                    socket.remotePort.toString(),
+                    packet.name,
                     packet.version,
                     packet.protocolVersion
                 )

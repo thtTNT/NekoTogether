@@ -44,6 +44,7 @@ export default class CommunicationManager {
             console.log("客户端ID: " + newClient.id)
             console.log("ip地址: " + newClient.ip)
             console.log("通讯端口: " + newClient.port)
+            console.log("客户端名称: " + newClient.name)
             console.log("客户端版本: " + newClient.version)
             console.log("客户端通讯协议: " + newClient.protocolVersion)
             let socket = new net.Socket()
@@ -53,11 +54,16 @@ export default class CommunicationManager {
             client.send(
                 new PacketClientALOHA(
                     NekoTogether.instance.config.clientId,
+                    NekoTogether.instance.config.clientName,
                     NekoTogether.instance.config.CLIENT_VERSION,
                     NekoTogether.instance.config.PROTOCOL_VERSION
                 )
             )
         }
+    }
+
+    public getClients(): Client[] {
+        return this.clients
     }
 
 }

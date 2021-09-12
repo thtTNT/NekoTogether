@@ -7,6 +7,7 @@ import * as os from "os";
 export default class Discover {
 
     private listenPort: number = 36001
+    private readonly MULTICAST_IP = "225.0.0.168"
 
     constructor() {
         let server = createSocket("udp4")
@@ -28,6 +29,7 @@ export default class Discover {
                 data.client.id,
                 remoteInfo.address,
                 data.port,
+                data.client.name,
                 data.client.version,
                 data.client.protocol_version
             )
@@ -37,10 +39,17 @@ export default class Discover {
         })
 
         server.on("listening", () => {
+            server.setBroadcast(true)
+            server.setMulticastTTL(128)
+            server.addMembership(this.MULTICAST_IP)
             console.log("Discover service launch successfully! (port:" + this.listenPort + ")")
         })
         server.bind(this.listenPort)
 
+        this.broadcast()
+    }
+
+    private broadcast() {
         // Send Part
         let socket = createSocket("udp4")
 
@@ -58,26 +67,17 @@ export default class Discover {
                 port: NekoTogether.instance.communicationManager.SERVER_PORT,
                 client: {
                     id: NekoTogether.instance.config.clientId,
+                    name: NekoTogether.instance.config.clientName,
                     version: NekoTogether.instance.config.CLIENT_VERSION,
                     protocol_version: NekoTogether.instance.config.PROTOCOL_VERSION
                 }
             }))
 
-            for (let network of availableNetwork) {
-                let sub = ip.cidrSubnet(network.cidr)
-                let first = ip.toLong(sub.firstAddress)
-                let last = ip.toLong(sub.lastAddress)
-                for (let i = first; i <= last; i++) {
-                    for (let port = 36001; port <= 36010; port++) {
-                        socket.send(message, 0, message.length, port, ip.fromLong(i), (error, bytes) => {
-                        })
-                    }
-                }
+            for (let port = 36001; port <= 36010; port++) {
+                socket.send(message, 0, message.length, port, this.MULTICAST_IP, (error, bytes) => {
+                })
             }
-        }, 1000)
-
-
+        }, 3000)
     }
-
 }
 

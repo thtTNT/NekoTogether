@@ -6,11 +6,13 @@ export default class Config {
 
     public CLIENT_VERSION = "1.0.0"
     public PROTOCOL_VERSION = 1
+    public clientName: string
     public clientId: string
     public dataPath: string
 
     constructor() {
         this.clientId = generateUUIDv4();
+        this.clientName = os.hostname()
 
         this.dataPath = os.homedir() + "/Library/NekoTogether"
         if (!fs.existsSync(this.dataPath)) {
