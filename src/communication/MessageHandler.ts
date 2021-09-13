@@ -1,6 +1,7 @@
 import * as net from "net";
 import PacketClientALOHA from "./packet/PacketClientALOHA";
 import Packet from "./packet/Packet";
+import * as encoding from 'encoding'
 
 enum State {
     WAIT_LENGTH,
@@ -59,7 +60,7 @@ export default class MessageHandler {
     send(packet: Packet) {
         let data = JSON.stringify(packet)
         this.socket.write(data.length.toString())
-        this.socket.write(data)
+        this.socket.write(data, "utf8")
     }
 
 }

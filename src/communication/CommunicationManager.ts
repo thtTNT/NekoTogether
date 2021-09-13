@@ -18,8 +18,8 @@ export default class CommunicationManager extends events.EventEmitter {
         })
     }
 
-    public init() : Promise<any>{
-        return new Promise((resolve,reject) => {
+    public init(): Promise<any> {
+        return new Promise((resolve, reject) => {
             this.server.listen(this.SERVER_PORT)
             this.server.on("error", (error) => {
                 // @ts-ignore
@@ -57,8 +57,8 @@ export default class CommunicationManager extends events.EventEmitter {
             client.send(
                 new PacketClientALOHA(
                     NekoTogether.instance.config.clientId,
-                    NekoTogether.instance.config.clientName,
                     NekoTogether.instance.config.CLIENT_VERSION,
+                    NekoTogether.instance.config.clientName,
                     NekoTogether.instance.config.PROTOCOL_VERSION
                 )
             )
