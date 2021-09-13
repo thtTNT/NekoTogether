@@ -36,24 +36,32 @@ export default class FileHelperManager {
     }
 
     private static init() {
-        let path = NekoTogether.instance.config.dataPath + "/FileHelper"
-        if (!fs.existsSync(path)) {
-            fs.mkdirSync(path)
+        switch (process.platform){
+            case "darwin":
+                let path = NekoTogether.instance.config.dataPath + "/FileHelper"
+                if (!fs.existsSync(path)) {
+                    fs.mkdirSync(path)
+                }
+
+                let fhAppPath = NekoTogether.instance.app.getAppPath() + "/assets/FileHelper/FileHelper-Mac"
+                fs.copyFileSync(fhAppPath, path + "/FileHelper")
+
+                let servicePath = os.homedir() + "/Library/Services"
+                Tools.copy(NekoTogether.instance.app.getAppPath() + "/assets/FileHelper/share.workflow", servicePath + "/通过喵唧快传分享.workflow")
+                break;
         }
-
-        let fhAppPath = NekoTogether.instance.app.getAppPath() + "/assets/FileHelper/FileHelper-Mac"
-        fs.copyFileSync(fhAppPath, path + "/FileHelper")
-
-        let servicePath = os.homedir() + "/Library/Services"
-        Tools.copy(NekoTogether.instance.app.getAppPath() + "/assets/FileHelper/share.workflow", servicePath + "/通过喵唧快传分享.workflow")
     }
 
     private savePort() {
-        let path = NekoTogether.instance.config.dataPath + "/FileHelper/helper.port"
-        if (fs.existsSync(path)) {
-            fs.rmSync(path)
+        switch (process.platform) {
+            case "darwin":
+                let path = NekoTogether.instance.config.dataPath + "/FileHelper/helper.port"
+                if (fs.existsSync(path)) {
+                    fs.rmSync(path)
+                }
+                fs.writeFileSync(path, this.port.toString())
+                break;
         }
-        fs.writeFileSync(path, this.port.toString())
     }
 
 }

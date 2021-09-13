@@ -7,7 +7,6 @@ import * as os from "os";
 export default class Discover {
 
     private listenPort: number = 36001
-    private readonly MULTICAST_IP = "225.0.0.168"
 
     constructor() {
         let server = createSocket("udp4")

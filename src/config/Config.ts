@@ -14,9 +14,13 @@ export default class Config {
         this.clientId = generateUUIDv4();
         this.clientName = os.hostname()
 
-        this.dataPath = os.homedir() + "/Library/NekoTogether"
-        if (!fs.existsSync(this.dataPath)) {
-            fs.mkdirSync(this.dataPath)
+        switch (process.platform) {
+            case "darwin":
+                this.dataPath = os.homedir() + "/Library/NekoTogether"
+                if (!fs.existsSync(this.dataPath)) {
+                    fs.mkdirSync(this.dataPath)
+                }
+                break;
         }
     }
 
