@@ -38,4 +38,4 @@ yarn dist # Package the app and it will create a dictionary called "dist" in the
 ## Contribution
 Welcome any developer to join our project, There are two ways to contribute code to this project.
 - easier way, fork this project and do some change and create a pull request. We will check the code as soon as possible.
-- Join NekoIT studio is highly recommended. We need developer with passion to developer this or more open-source software to improve out programing community.
+- Join NekoIT studio is highly recommended. We need developer with passion to develop this or more open-source software to improve programing community.
