@@ -16,12 +16,14 @@ export default class Client {
             if (packet instanceof PacketClientALOHA) {
                 this.info = new ClientInfo(
                     packet.id,
-                    socket.address().toString(),
+                    socket.remoteAddress,
                     socket.remotePort.toString(),
                     packet.name,
                     packet.version,
                     packet.protocolVersion
                 )
+                console.log("发现新客户端上线:")
+                this.info.printInfo()
             }
         })
     }

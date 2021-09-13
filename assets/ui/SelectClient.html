@@ -28,20 +28,28 @@
     const app = new Vue({
         el: '#app',
         data() {
-            return {}
+            return {
+                clients: []
+            }
         },
         methods: {
-            close(){
+            close() {
                 window.close()
             }
+        },
+        mounted() {
+            const body = document.getElementById("body")
+
+            ipcRenderer.on("clientList", (event, arg) => {
+                console.log(arg)
+                this.clients = arg
+            })
+
+            ipcRenderer.send("resize", {
+                width: body.clientWidth,
+                height: body.clientHeight
+            })
         }
-    })
-
-    const body = document.getElementById("body")
-
-    ipcRenderer.send("resize", {
-        width: body.clientWidth,
-        height: body.clientHeight
     })
 </script>
 </html>

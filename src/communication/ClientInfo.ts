@@ -16,4 +16,13 @@ export default class ClientInfo {
         this.protocolVersion = protocolVersion
     }
 
+    public printInfo() {
+        console.log("客户端ID: " + this.id)
+        console.log("ip地址: " + this.ip)
+        console.log("通讯端口: " + this.port)
+        console.log("客户端名称: " + this.name)
+        console.log("客户端版本: " + this.version)
+        console.log("客户端通讯协议: " + this.protocolVersion)
+    }
+
 }

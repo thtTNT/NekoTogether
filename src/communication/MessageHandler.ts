@@ -20,11 +20,11 @@ export default class MessageHandler {
         this.socket = socket
         this.socket.on("data", (msg) => {
             // @ts-ignore
-            for (let chr of msg.buffer) {
+            for (let chr of msg.toString()) {
                 switch (this.state) {
                     case State.WAIT_LENGTH:
                         if (chr == '{' || chr == "[") {
-                            this.length = Number.parseInt(this.buffer)
+                            this.length = Number.parseInt(this.buffer) - 1
                             this.state = State.WAIT_CONTENT
                             this.buffer = chr
                         } else {
@@ -33,8 +33,8 @@ export default class MessageHandler {
                         break;
                     case State.WAIT_CONTENT:
                         this.buffer += chr
-                        length--;
-                        if (length == 0) {
+                        this.length--;
+                        if (this.length == 0) {
                             this.handleData()
                             this.state = State.WAIT_LENGTH
                             this.buffer = ""

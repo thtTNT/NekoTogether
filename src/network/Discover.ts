@@ -15,7 +15,7 @@ export default class Discover {
             // @ts-ignore
             if (err.code === "EADDRINUSE") {
                 console.log("Discover Service launch error. (Port in use)")
-                if (this.listenPort <= 36010) {
+                if (this.listenPort <= 36003) {
                     server.bind(++this.listenPort)
                 }
             }
@@ -39,17 +39,13 @@ export default class Discover {
         })
 
         server.on("listening", () => {
-            server.setBroadcast(true)
-            server.setMulticastTTL(128)
-            server.addMembership(this.MULTICAST_IP)
             console.log("Discover service launch successfully! (port:" + this.listenPort + ")")
         })
         server.bind(this.listenPort)
 
-        this.broadcast()
     }
 
-    private broadcast() {
+    public broadcast() {
         // Send Part
         let socket = createSocket("udp4")
 
@@ -62,7 +58,12 @@ export default class Discover {
             }
         }
 
-        setInterval(() => {
+        this.sendPacket(socket, availableNetwork).then(r => () => {
+        })
+    }
+
+    private async sendPacket(socket, availableNetwork) {
+        while (true) {
             const message = Buffer.from(JSON.stringify({
                 port: NekoTogether.instance.communicationManager.SERVER_PORT,
                 client: {
@@ -73,11 +74,21 @@ export default class Discover {
                 }
             }))
 
-            for (let port = 36001; port <= 36010; port++) {
-                socket.send(message, 0, message.length, port, this.MULTICAST_IP, (error, bytes) => {
-                })
+            for (let network of availableNetwork) {
+                let sub = ip.cidrSubnet(network.cidr)
+                let first = ip.toLong(sub.firstAddress)
+                let last = ip.toLong(sub.lastAddress)
+                for (let i = first; i <= last; i++) {
+                    for (let port = 36001; port <= 36003; port++) {
+                        socket.send(message, 0, message.length, port, ip.fromLong(i), (error, bytes) => {
+                        })
+                        await new Promise((resolve, reject) => {
+                            setTimeout(() => resolve(null), 20)
+                        })
+                    }
+                }
             }
-        }, 3000)
+        }
     }
 }
 

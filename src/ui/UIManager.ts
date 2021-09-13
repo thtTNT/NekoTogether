@@ -1,14 +1,11 @@
 import Client from "../communication/Client";
-import {app, BrowserWindow, ipcMain} from 'electron'
+import {app, BrowserWindow, ipcMain, webContents} from 'electron'
 import CommunicationManager from "../communication/CommunicationManager";
 import NekoTogether from "../NekoTogether";
 
 export default class UIManager {
 
     constructor() {
-        ipcMain.on("getClientList", (event) => {
-            event.sender.send(JSON.stringify(NekoTogether.instance.communicationManager.getClients()))
-        })
     }
 
     public selectClient(): Client {
@@ -32,6 +29,12 @@ export default class UIManager {
             window.show()
             window.center()
             window.webContents.openDevTools()
+
+            // Register a event send clientList to window once it update
+            window.webContents.send("clientList", NekoTogether.instance.communicationManager.getClients())
+            NekoTogether.instance.communicationManager.on("new_client", () => {
+                window.webContents.send("clientList", NekoTogether.instance.communicationManager.getClients())
+            })
         })
 
         return null

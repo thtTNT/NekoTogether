@@ -26,6 +26,13 @@ export default class NekoTogether {
         this.fileHelperManager = new FileHelperManager()
         this.transferManager = new TransferManager()
         this.uiManager = new UIManager()
+        this.init()
+    }
+
+    public init() {
+        this.communicationManager.init().then(
+            () => this.discover.broadcast())
+
     }
 
 
