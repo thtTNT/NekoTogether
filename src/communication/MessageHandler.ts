@@ -2,6 +2,7 @@ import * as net from "net";
 import PacketClientALOHA from "./packet/PacketClientALOHA";
 import Packet from "./packet/Packet";
 import * as encoding from 'encoding'
+import PacketTransmissionRequest from "./packet/PacketTransmissionRequest";
 
 enum State {
     WAIT_LENGTH,
@@ -51,9 +52,15 @@ export default class MessageHandler {
 
     handleData() {
         let packet = JSON.parse(this.buffer)
+        console.debug("Receive packet: ")
+        console.log(packet)
         switch (packet.typeName) {
             case "CLIENT_ALOHA":
                 this._whenPacket(PacketClientALOHA.fromJSON(packet))
+                break
+            case PacketTransmissionRequest.NAME:
+                this._whenPacket(PacketTransmissionRequest.fromJSON(packet))
+                break
         }
     }
 

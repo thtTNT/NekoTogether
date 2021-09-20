@@ -12,7 +12,7 @@
         <div style="height: 100%;width: 100%;display: flex;justify-content: center;align-items: center" v-if="!clients">
             <p style="color: #616161">暂时没有找到其他在局域网的设备，请见检查其他设备是否在同一局域网内并正常启动"喵唧快传"。</p>
         </div>
-        <mu-list v-if="clients" v-for="client in clients">
+        <mu-list v-if="clients" v-for="client in clients" @click="selectClient(client)">
             <mu-list-item avatar button :ripple="false">
                 <mu-list-item-action>
                     <mu-avatar>
@@ -45,6 +45,9 @@
         methods: {
             close() {
                 window.close()
+            },
+            selectClient(client) {
+                ipcRenderer.send("select_client", client)
             }
         },
         mounted() {

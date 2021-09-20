@@ -7,7 +7,13 @@
     "outDir": "./build",
     "experimentalDecorators": true,
     "noImplicitAny": false,
-    "types": []
+    "types": [],
+    "lib": [
+      "dom",
+      "es5",
+      "scripthost",
+      "dom"
+    ]
   },
   "include": [
     "src"

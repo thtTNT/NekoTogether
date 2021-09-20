@@ -34,7 +34,7 @@ export default class Discover {
             )
 
             // notify clientManager accept new client
-            NekoTogether.instance.communicationManager.accept(client)
+            NekoTogether.instance.communicationManager.connect(client)
         })
 
         server.on("listening", () => {

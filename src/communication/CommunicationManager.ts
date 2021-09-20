@@ -36,12 +36,15 @@ export default class CommunicationManager extends events.EventEmitter {
             })
 
             this.server.on('connection', socket => {
-                this.clients.push(new Client(socket, null))
+                Client.fromSocket(socket).then(client => {
+                    this.clients.push(client)
+                    this.emit("new_client", client)
+                })
             })
         })
     }
 
-    accept(newClient: ClientInfo): void {
+    connect(newClient: ClientInfo): void {
         //Check client if is self
         if (newClient.id === NekoTogether.instance.config.clientId) return;
 
@@ -72,6 +75,10 @@ export default class CommunicationManager extends events.EventEmitter {
 
     public getClients(): Client[] {
         return this.clients
+    }
+
+    public getClient(id: string): Client {
+        return this.clients.filter((client) => client.getInfo().id === id).pop()
     }
 
 }
